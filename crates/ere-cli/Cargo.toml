@@ -14,6 +14,7 @@ tracing-subscriber = { workspace = true, features = ["env-filter"], optional = t
 
 # Local dependencies
 ere-jolt = { workspace = true, optional = true }
+ere-miden = { workspace = true, optional = true }
 ere-nexus = { workspace = true, optional = true }
 ere-openvm = { workspace = true, optional = true }
 ere-pico = { workspace = true, optional = true }
@@ -31,6 +32,7 @@ workspace = true
 default = []
 cli = ["dep:clap", "dep:tracing-subscriber"]
 jolt = ["dep:ere-jolt"]
+miden = ["dep:ere-miden"]
 nexus = ["dep:ere-nexus"]
 openvm = ["dep:ere-openvm"]
 pico = ["dep:ere-pico"]

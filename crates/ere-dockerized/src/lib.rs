@@ -86,6 +86,7 @@ pub mod input;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ErezkVM {
     Jolt,
+    Miden,
     Nexus,
     OpenVM,
     Pico,
@@ -100,6 +101,7 @@ impl ErezkVM {
             Self::Jolt => "jolt",
             Self::Nexus => "nexus",
             Self::OpenVM => "openvm",
+            Self::Miden => "miden",
             Self::Pico => "pico",
             Self::Risc0 => "risc0",
             Self::SP1 => "sp1",
@@ -186,6 +188,7 @@ impl FromStr for ErezkVM {
             "jolt" => Self::Jolt,
             "nexus" => Self::Nexus,
             "openvm" => Self::OpenVM,
+            "miden" => Self::Miden,
             "pico" => Self::Pico,
             "risc0" => Self::Risc0,
             "sp1" => Self::SP1,
