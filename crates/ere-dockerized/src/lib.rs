@@ -91,6 +91,7 @@ pub mod output;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ErezkVM {
     Jolt,
+    Miden,
     Nexus,
     OpenVM,
     Pico,
@@ -104,6 +105,7 @@ impl ErezkVM {
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Jolt => "jolt",
+            Self::Miden => "miden",
             Self::Nexus => "nexus",
             Self::OpenVM => "openvm",
             Self::Pico => "pico",
@@ -200,6 +202,7 @@ impl FromStr for ErezkVM {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "jolt" => Self::Jolt,
+            "miden" => Self::Miden,
             "nexus" => Self::Nexus,
             "openvm" => Self::OpenVM,
             "pico" => Self::Pico,

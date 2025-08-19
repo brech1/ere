@@ -1,0 +1,38 @@
+[package]
+name = "ere-miden"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+bincode = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+zkvm-interface = { workspace = true }
+
+# Miden
+miden-assembly = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
+    "std",
+] }
+miden-stdlib = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
+    "std",
+] }
+miden-core = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
+    "std",
+] }
+miden-processor = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
+    "std",
+] }
+miden-prover = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
+    "std",
+] }
+miden-verifier = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false }
+
+[build-dependencies]
+build-utils.workspace = true
+
+[lints]
+workspace = true
