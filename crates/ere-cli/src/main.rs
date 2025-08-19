@@ -10,6 +10,7 @@ const _: () = {
     if cfg!(feature = "cli") {
         assert!(
             (cfg!(feature = "jolt") as u8
+                + cfg!(feature = "miden") as u8
                 + cfg!(feature = "nexus") as u8
                 + cfg!(feature = "openvm") as u8
                 + cfg!(feature = "pico") as u8
@@ -131,6 +132,9 @@ fn compile(guest_path: PathBuf, program_path: PathBuf) -> Result<(), Error> {
     #[cfg(feature = "sp1")]
     let program = ere_sp1::RV32_IM_SUCCINCT_ZKVM_ELF.compile(&guest_path);
 
+    #[cfg(feature = "miden")]
+    let program = ere_miden::MIDEN_TARGET.compile(&guest_path);
+
     #[cfg(feature = "zisk")]
     let program = ere_zisk::RV64_IMA_ZISK_ZKVM_ELF.compile(&guest_path);
 
@@ -194,6 +198,9 @@ fn construct_zkvm(program_path: PathBuf, resource: ProverResourceType) -> Result
 
     #[cfg(feature = "sp1")]
     let zkvm = Ok::<_, Error>(ere_sp1::EreSP1::new(program, resource));
+
+    #[cfg(feature = "miden")]
+    let zkvm = Ok::<_, Error>(ere_miden::EreMiden::new(program, resource));
 
     #[cfg(feature = "zisk")]
     let zkvm = Ok::<_, Error>(ere_zisk::EreZisk::new(program, resource));

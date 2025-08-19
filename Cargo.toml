@@ -4,6 +4,7 @@ members = [
     "crates/test-utils",
     # zkVMs
     "crates/ere-jolt",
+    "crates/ere-miden",
     "crates/ere-nexus",
     "crates/ere-openvm",
     "crates/ere-pico",
@@ -83,6 +84,7 @@ test-utils = { path = "crates/test-utils" }
 ere-cli = { path = "crates/ere-cli", default-features = false }
 ere-dockerized = { path = "crates/ere-dockerized" }
 ere-jolt = { path = "crates/ere-jolt" }
+ere-miden = { path = "crates/ere-miden" }
 ere-nexus = { path = "crates/ere-nexus" }
 ere-openvm = { path = "crates/ere-openvm" }
 ere-pico = { path = "crates/ere-pico" }

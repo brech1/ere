@@ -30,6 +30,9 @@ impl ErezkVM {
             Self::Pico => bincode::serialize(obj).map_err(|err| {
                 CommonError::serilization(err, "Failed to serialize object with `bincode`")
             }),
+            Self::Miden => bincode::serialize(obj).map_err(|err| {
+                CommonError::serilization(err, "Failed to serialize object with `bincode`")
+            }),
             Self::Risc0 => risc0_zkvm::serde::to_vec(obj)
                 .map(|vec| bytemuck::cast_slice(&vec).to_vec())
                 .map_err(|err| {
