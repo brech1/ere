@@ -8,7 +8,7 @@ RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION:-1.88.0}
 
 echo "Installing Miden VM CLI (${MIDEN_VERSION})..."
 
-# Check for required dependencies (git, rustup, cargo).
+# Check for required dependencies.
 echo "Checking prerequisites..."
 for tool in git rustup cargo; do
     if ! command -v "$tool" &>/dev/null; then
