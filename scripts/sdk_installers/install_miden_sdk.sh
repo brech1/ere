@@ -1,47 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-# --- Utility functions (duplicated) ---
-# Checks if a tool is installed and available in PATH.
-is_tool_installed() {
-    command -v "$1" &> /dev/null
-}
+MIDEN_VM_REPO_URL="https://github.com/0xPolygonMiden/miden-vm.git"
+CARGO_BIN_DIR="${CARGO_HOME:-$HOME/.cargo}/bin"
+MIDEN_VERSION=${MIDEN_VERSION:-v0.17.1}
+RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION:-1.88.0}
 
-# Ensures a tool is installed. Exits with an error if not.
-ensure_tool_installed() {
-    local tool_name="$1"
-    local purpose_message="$2"
-    if ! is_tool_installed "${tool_name}"; then
-        echo "Error: Required tool '${tool_name}' could not be found." >&2
-        if [ -n "${purpose_message}" ]; then
-            echo "       It is needed ${purpose_message}." >&2
-        fi
-        echo "       Please install it first and ensure it is in your PATH." >&2
+echo "Installing Miden VM CLI (${MIDEN_VERSION})..."
+
+# Check for required dependencies (git, rustup, cargo).
+echo "Checking prerequisites..."
+for tool in git rustup cargo; do
+    if ! command -v "$tool" &>/dev/null; then
+        echo "Error: Required tool '${tool}' is not installed." >&2
         exit 1
     fi
-}
-# --- End of Utility functions ---
+done
 
-echo "Setting up Miden development environment..."
+# Ensure the correct Rust toolchain is installed.
+echo "Installing Rust toolchain ${RUST_TOOLCHAIN_VERSION}..."
+rustup toolchain install "${RUST_TOOLCHAIN_VERSION}" --profile minimal
 
-# Prerequisites
-ensure_tool_installed "git" "to install cargo dependencies from git repositories"
-ensure_tool_installed "rustup" "for managing Rust toolchains"
-ensure_tool_installed "cargo" "to build and install Rust packages"
+# Clone, build, and install the Miden VM from source.
+echo "Building from source..."
+tmp_dir=$(mktemp -d)
+trap 'rm -rf -- "$tmp_dir"' EXIT
+git clone --quiet --depth 1 --branch "${MIDEN_VERSION}" "${MIDEN_VM_REPO_URL}" "$tmp_dir"
+cargo "+${RUST_TOOLCHAIN_VERSION}" install --path "$tmp_dir/miden-vm" --features executable
 
-# Define Miden-specific versions
-MIDEN_CLI_VERSION_TAG="v0.17.1"
-
-# Install the Miden Client CLI using the specified toolchain and version tag
-echo "Installing Miden Client (version ${MIDEN_CLI_VERSION_TAG}) from GitHub repository (0xPolygonMiden/miden-vm)..."
-cargo "+${MIDEN_TOOLCHAIN_VERSION}" install --git https://github.com/0xPolygonMiden/miden-vm --tag "${MIDEN_CLI_VERSION_TAG}" miden-client
-
-# Verify the Miden Client installation
-echo "Verifying Miden Client installation..."
-if miden-client --version; then
-    echo "Miden Client installation verified successfully."
-else
-    echo "Error: 'miden-client --version' failed. The Miden Client might not have installed correctly." >&2
-    echo "       Ensure that your Cargo binary path (${HOME}/.cargo/bin) is included in your shell's PATH." >&2
+# Verify the installation.
+echo "Verifying installation"
+export PATH="${CARGO_BIN_DIR}:$PATH"
+if ! miden-vm --version &>/dev/null; then
+    echo "Error: 'miden-vm' command failed. Ensure '${CARGO_BIN_DIR}' is in your PATH." >&2
     exit 1
 fi
+
+echo
+echo "Miden VM installation successful."
+echo "To use it, add the following to your shell profile (e.g., ~/.bashrc):"
+echo
+echo "  export PATH=\"${CARGO_BIN_DIR}:\$PATH\""
+echo
+echo "Then restart your terminal or source the profile file."
