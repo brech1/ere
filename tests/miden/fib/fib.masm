@@ -1,7 +1,29 @@
 begin
-    # This code computes fibonacci starting from whatever is on the stack
-    # With empty stack (all zeros), this computes fibonacci of (0,0) = 0
-    repeat.49
-        swap dup.1 add
+    # Read the initial two Fibonacci numbers from the advice tape
+    adv_push.1  # Push first Fibonacci number (usually 0)
+    adv_push.1  # Push second Fibonacci number (usually 1)
+    
+    # Read the number of iterations from the advice tape
+    adv_push.1  # Push number of iterations
+    
+    # Generate Fibonacci sequence
+    # Stack: [iterations, fib_b, fib_a]
+    dup neq.0   # Check if iterations > 0
+    
+    while.true
+        # Stack: [iterations, fib_b, fib_a]
+        movdn.2     # Move iterations down: [fib_b, fib_a, iterations]
+        dup.1       # Duplicate fib_a: [fib_a, fib_b, fib_a, iterations]
+        add         # Add fib_a + fib_b: [fib_next, fib_a, iterations]
+        swap        # Swap: [fib_a, fib_next, iterations]
+        movup.2     # Move iterations up: [iterations, fib_a, fib_next]
+        
+        # Decrement counter and check if we continue
+        sub.1       # Decrement iterations
+        dup neq.0   # Check if iterations > 0
     end
+    
+    # Clean up: drop the counter, leave the last two Fibonacci numbers on stack
+    drop
+    # Stack now contains: [fib_n, fib_n-1]
 end

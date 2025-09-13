@@ -1,3 +1,10 @@
 begin
-    push.42 swap drop
+    # Read two values from the advice tape
+    adv_push.1  # Push first value from advice tape to stack
+    adv_push.1  # Push second value from advice tape to stack
+    
+    # Add the two values
+    add
+    
+    # The result is now on the top of the stack
 end
