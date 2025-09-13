@@ -60,10 +60,10 @@ jolt-sdk = { git = "https://github.com/a16z/jolt.git", rev = "55b9830a3944dde55d
 
 # Miden dependencies
 miden-assembly = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
-miden-stdlib = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
 miden-core = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
 miden-processor = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
 miden-prover = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
+miden-stdlib = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
 miden-verifier = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.1" }
 
 # Nexus dependencies

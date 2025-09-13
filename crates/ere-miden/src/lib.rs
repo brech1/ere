@@ -24,7 +24,6 @@ use zkvm_interface::{
 
 include!(concat!(env!("OUT_DIR"), "/name_and_sdk_version.rs"));
 
-/// A container for a compiled Miden program's bytes.
 #[derive(Clone, Serialize, Deserialize)]
 pub struct MidenProgram {
     pub program_bytes: Vec<u8>,
@@ -37,7 +36,6 @@ struct MidenProofBundle {
     proof: Vec<u8>,
 }
 
-/// An instance of the Ere Miden zkVM.
 pub struct EreMiden {
     program: Program,
 }
@@ -67,7 +65,6 @@ impl EreMiden {
 }
 
 impl zkVM for EreMiden {
-    /// Executes the Miden program and returns the public outputs and an execution report.
     fn execute(&self, inputs: &Input) -> Result<(PublicValues, ProgramExecutionReport), zkVMError> {
         let (stack_inputs, advice_inputs) = generate_miden_inputs(inputs)?;
         let mut host = Self::setup_host()?;
@@ -94,7 +91,6 @@ impl zkVM for EreMiden {
         Ok((public_values, report))
     }
 
-    /// Proves the Miden program and returns the public outputs, proof, and proving report.
     fn prove(
         &self,
         inputs: &Input,
@@ -132,7 +128,6 @@ impl zkVM for EreMiden {
         ))
     }
 
-    /// Verifies a Miden execution proof.
     fn verify(&self, proof: &[u8]) -> Result<PublicValues, zkVMError> {
         let bundle: MidenProofBundle = bincode::deserialize(proof)
             .map_err(|e| MidenError::Verify(VerifyError::BundleDeserialization(e)))?;
@@ -158,21 +153,19 @@ impl zkVM for EreMiden {
             .map_err(|e| MidenError::Verify(VerifyError::BundleDeserialization(e)))?)
     }
 
-    /// Returns the name of the zkVM.
     fn name(&self) -> &'static str {
         NAME
     }
 
-    /// Returns the SDK version of the zkVM.
     fn sdk_version(&self) -> &'static str {
         SDK_VERSION
     }
 
-    /// Deserializes a value from a given reader.
     fn deserialize_from<R: Read, T: DeserializeOwned>(&self, reader: R) -> Result<T, zkVMError> {
         bincode::deserialize_from(reader).map_err(|e| MidenError::Execute(e.into()).into())
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
