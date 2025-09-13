@@ -1,0 +1,7 @@
+begin
+    # This code computes fibonacci starting from whatever is on the stack
+    # With empty stack (all zeros), this computes fibonacci of (0,0) = 0
+    repeat.49
+        swap dup.1 add
+    end
+end

@@ -6,30 +6,21 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
-anyhow = { workspace = true }
 bincode = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
-tracing = { workspace = true }
 zkvm-interface = { workspace = true }
 
 # Miden
-miden-assembly = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
-    "std",
-] }
-miden-stdlib = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
-    "std",
-] }
-miden-core = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
-    "std",
-] }
-miden-processor = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
-    "std",
-] }
-miden-prover = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false, features = [
-    "std",
-] }
-miden-verifier = { git = "https://github.com/0xPolygonMiden/miden-vm.git", tag = "v0.17.0", default-features = false }
+miden-assembly = { workspace = true, features = ["std"] }
+miden-stdlib = { workspace = true, features = ["std"] }
+miden-core = { workspace = true, features = ["std"] }
+miden-processor = { workspace = true, features = ["std"] }
+miden-prover = { workspace = true, features = ["std"] }
+miden-verifier = { workspace = true }
+
+[dev-dependencies]
+test-utils = { workspace = true, features = ["host"] }
 
 [build-dependencies]
 build-utils.workspace = true

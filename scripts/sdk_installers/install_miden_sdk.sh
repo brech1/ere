@@ -24,20 +24,19 @@ ensure_tool_installed() {
 
 echo "Setting up Miden development environment..."
 
-# 1. Prerequisites
+# Prerequisites
 ensure_tool_installed "git" "to install cargo dependencies from git repositories"
 ensure_tool_installed "rustup" "for managing Rust toolchains"
 ensure_tool_installed "cargo" "to build and install Rust packages"
 
-# 2. Define Miden-specific versions
-# Using a known compatible toolchain and client version for stability.
-MIDEN_CLI_VERSION_TAG="v0.17.0"
+# Define Miden-specific versions
+MIDEN_CLI_VERSION_TAG="v0.17.1"
 
-# 4. Install the Miden Client CLI using the specified toolchain and version tag
+# Install the Miden Client CLI using the specified toolchain and version tag
 echo "Installing Miden Client (version ${MIDEN_CLI_VERSION_TAG}) from GitHub repository (0xPolygonMiden/miden-vm)..."
 cargo "+${MIDEN_TOOLCHAIN_VERSION}" install --git https://github.com/0xPolygonMiden/miden-vm --tag "${MIDEN_CLI_VERSION_TAG}" miden-client
 
-# 5. Verify the Miden Client installation
+# Verify the Miden Client installation
 echo "Verifying Miden Client installation..."
 if miden-client --version; then
     echo "Miden Client installation verified successfully."

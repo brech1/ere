@@ -547,6 +547,23 @@ mod test {
     //       - ere-pico
 
     #[test]
+    fn dockerized_miden() {
+        let zkvm = ErezkVM::Miden;
+
+        let guest_directory = testing_guest_directory(zkvm.as_str(), "basic");
+        let program = EreDockerizedCompiler::new(zkvm, workspace_dir())
+            .unwrap()
+            .compile(&guest_directory)
+            .unwrap();
+
+        let zkvm = EreDockerizedzkVM::new(zkvm, program, ProverResourceType::Cpu).unwrap();
+
+        let io = BasicProgramIo::valid();
+        run_zkvm_execute(&zkvm, &io);
+        run_zkvm_prove(&zkvm, &io);
+    }
+
+    #[test]
     fn dockerized_openvm() {
         let zkvm = ErezkVM::OpenVM;
 
