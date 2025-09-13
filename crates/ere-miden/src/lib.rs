@@ -46,7 +46,6 @@ fn outputs_to_public_values(outputs: &StackOutputs) -> Result<PublicValues, binc
 }
 
 impl EreMiden {
-    /// Creates a new `EreMiden` instance from compiled program bytes.
     pub fn new(program: MidenProgram) -> Result<Self, MidenError> {
         let program = Program::read_from_bytes(&program.program_bytes)
             .map_err(ExecuteError::ProgramDeserialization)
