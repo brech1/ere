@@ -91,6 +91,7 @@ pub mod output;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ErezkVM {
     Jolt,
+    Miden,
     Nexus,
     OpenVM,
     Pico,
@@ -104,6 +105,7 @@ impl ErezkVM {
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Jolt => "jolt",
+            Self::Miden => "miden",
             Self::Nexus => "nexus",
             Self::OpenVM => "openvm",
             Self::Pico => "pico",
@@ -200,6 +202,7 @@ impl FromStr for ErezkVM {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "jolt" => Self::Jolt,
+            "miden" => Self::Miden,
             "nexus" => Self::Nexus,
             "openvm" => Self::OpenVM,
             "pico" => Self::Pico,
@@ -542,6 +545,23 @@ mod test {
     //       - ere-jolt
     //       - ere-nexus
     //       - ere-pico
+
+    #[test]
+    fn dockerized_miden() {
+        let zkvm = ErezkVM::Miden;
+
+        let guest_directory = testing_guest_directory(zkvm.as_str(), "basic");
+        let program = EreDockerizedCompiler::new(zkvm, workspace_dir())
+            .unwrap()
+            .compile(&guest_directory)
+            .unwrap();
+
+        let zkvm = EreDockerizedzkVM::new(zkvm, program, ProverResourceType::Cpu).unwrap();
+
+        let io = BasicProgramIo::valid();
+        run_zkvm_execute(&zkvm, &io);
+        run_zkvm_prove(&zkvm, &io);
+    }
 
     #[test]
     fn dockerized_openvm() {
